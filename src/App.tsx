@@ -4,7 +4,7 @@ import { RootState } from "./store";
 import HomePage from "./pages/HomePage";
 import CarListPage from "./pages/CarListPage";
 import CarDetailsPage from "./pages/CarDetailsPage";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/AuthPage";
 
 function App() {
   const isAuthenticated = useSelector(
