@@ -1,13 +1,13 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
-instance.interceptors.request.use((config: AxiosRequestConfig) => {
+instance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) {
-    config.headers = { ...config.headers, Authorization: `Bearer ${token}` };
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
