@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { login } from "../features/auth/authSlice";
+import { login } from "../../features/auth/authSlice";
 import { Button, TextField } from "@mui/material";
 
 function LoginForm() {
