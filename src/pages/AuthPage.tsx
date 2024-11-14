@@ -18,7 +18,7 @@ function AuthPage() {
         p={3}
         bgcolor="white"
         boxShadow={3}
-        berderRadius={2}
+        borderRadius={2}
       >
         <Typography variant="h5" gutterBottom>
           {isLogin ? "Login" : "Register"}
