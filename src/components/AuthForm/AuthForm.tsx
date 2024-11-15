@@ -29,6 +29,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onToggleLogin }) => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!formData.username || !formData.password) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
     if (isLogin) {
       dispatch(
         loginUser({ username: formData.username, password: formData.password })

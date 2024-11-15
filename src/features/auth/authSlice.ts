@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
 
@@ -23,8 +24,10 @@ export const loginUser = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post("/auth/login", credentials);
+      console.log("Login response:", response.data);
       return response.data;
-    } catch {
+    } catch (error: any) {
+      console.error("Login error:", error.response?.data || error.message);
       return rejectWithValue("LOgin failed. Please check your credentials.");
     }
   }
