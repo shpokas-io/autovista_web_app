@@ -38,8 +38,10 @@ export const registerUser = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post("/auth/register", credentials);
+      console.log("Register response:", response);
       return response.data;
-    } catch {
+    } catch (error) {
+      console.error("Register error:", error);
       return rejectWithValue("Registration failed. Try a different username.");
     }
   }

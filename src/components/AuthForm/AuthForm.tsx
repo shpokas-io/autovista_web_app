@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { loginUser, registerUser } from "../../features/auth/authSlice";
 import FormInput from "./FormInput";
@@ -8,11 +8,14 @@ import SubmitButton from "./SubmitButton";
 
 type AuthFormProps = {
   isLogin: boolean;
+  onToggleLogin: () => void;
 };
 
-const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
+const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onToggleLogin }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { loading, error, isAuthenticated } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const [formData, setFormData] = useState({
     username: "",
@@ -43,6 +46,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
       );
     }
   };
+
+  useEffect(() => {
+    if (!isLogin && isAuthenticated) {
+      onToggleLogin();
+    }
+  }, [isAuthenticated, isLogin, onToggleLogin]);
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
