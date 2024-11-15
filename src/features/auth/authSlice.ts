@@ -24,11 +24,12 @@ export const loginUser = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post("/auth/login", credentials);
-      console.log("Login response:", response.data);
       return response.data;
     } catch (error: any) {
-      console.error("Login error:", error.response?.data || error.message);
-      return rejectWithValue("LOgin failed. Please check your credentials.");
+      if (error.response?.status === 401) {
+        return rejectWithValue("Incorrect username or password.");
+      }
+      return rejectWithValue("Something went wrong. Please try again later.");
     }
   }
 );
@@ -41,11 +42,12 @@ export const registerUser = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post("/auth/register", credentials);
-      console.log("Register response:", response);
       return response.data;
-    } catch (error) {
-      console.error("Register error:", error);
-      return rejectWithValue("Registration failed. Try a different username.");
+    } catch (error: any) {
+      if (error.response?.status === 500) {
+        return rejectWithValue("Username already exists. Try a different one.");
+      }
+      return rejectWithValue("Something went wrong. Please try again later.");
     }
   }
 );

@@ -1,18 +1,19 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Alert } from "@mui/material";
 import { loginUser, registerUser } from "../../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 import FormInput from "./FormInput";
 import SubmitButton from "./SubmitButton";
 
 type AuthFormProps = {
   isLogin: boolean;
-  onToggleLogin: () => void;
 };
 
-const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onToggleLogin }) => {
+const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { loading, error, isAuthenticated } = useSelector(
     (state: RootState) => state.auth
   );
@@ -23,71 +24,81 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onToggleLogin }) => {
     confirmPassword: "",
   });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const [fieldErrors, setFieldErrors] = useState({
+    username: false,
+    password: false,
+    confirmPassword: false,
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: false,
+    }));
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (validateForm()) {
-      if (isLogin) {
-        dispatch(
-          loginUser({
-            username: formData.username,
-            password: formData.password,
-          })
-        );
-      } else {
-        dispatch(
-          registerUser({
-            username: formData.username,
-            password: formData.password,
-          })
-        );
-      }
-    }
-  };
+    const newFieldErrors = {
+      username: false,
+      password: false,
+      confirmPassword: false,
+    };
 
-  const validateForm = (): boolean => {
-    if (!formData.username || !formData.password) {
-      alert("Please fill out all fields.");
-      return false;
-    }
+    if (!formData.username) newFieldErrors.username = true;
+    if (!formData.password) newFieldErrors.password = true;
 
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match.");
-      return false;
+      newFieldErrors.confirmPassword = true;
     }
 
-    return true;
+    setFieldErrors(newFieldErrors);
+
+    if (Object.values(newFieldErrors).some((error) => error)) return;
+
+    if (isLogin) {
+      dispatch(
+        loginUser({ username: formData.username, password: formData.password })
+      );
+    } else {
+      dispatch(
+        registerUser({
+          username: formData.username,
+          password: formData.password,
+        })
+      );
+    }
   };
 
   useEffect(() => {
-    if (!isLogin && isAuthenticated) {
-      onToggleLogin();
+    if (isLogin && isAuthenticated) {
+      navigate("/");
     }
-  }, [isAuthenticated, isLogin, onToggleLogin]);
+  }, [isAuthenticated, isLogin, navigate]);
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        maxWidth: 400,
-        mx: "auto",
-      }}
-    >
+    <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
       <FormInput
         label="Username"
         name="username"
         type="text"
         value={formData.username}
         onChange={handleChange}
+        error={fieldErrors.username}
+        helperText={fieldErrors.username ? "Username is required" : ""}
       />
       <FormInput
         label="Password"
@@ -95,6 +106,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onToggleLogin }) => {
         type="password"
         value={formData.password}
         onChange={handleChange}
+        error={fieldErrors.password}
+        helperText={fieldErrors.password ? "Password is required" : ""}
       />
       {!isLogin && (
         <FormInput
@@ -103,15 +116,15 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onToggleLogin }) => {
           type="password"
           value={formData.confirmPassword}
           onChange={handleChange}
+          error={fieldErrors.confirmPassword}
+          helperText={
+            fieldErrors.confirmPassword ? "Passwords do not match" : ""
+          }
         />
-      )}
-      {error && (
-        <Typography color="error" variant="body2">
-          {error}
-        </Typography>
       )}
       <SubmitButton
         label={loading ? "Processing..." : isLogin ? "Login" : "Register"}
+        disabled={loading}
       />
     </Box>
   );

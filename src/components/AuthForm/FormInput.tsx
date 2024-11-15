@@ -1,32 +1,40 @@
+import React from "react";
 import { TextField } from "@mui/material";
+import { TextFieldProps } from "@mui/material";
 
-type FormInputProps = {
+interface FormInputProps extends Omit<TextFieldProps, "onChange"> {
   label: string;
   name: string;
-  type?: string;
+  type: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+  error?: boolean;
+  helperText?: string;
+}
 
 const FormInput: React.FC<FormInputProps> = ({
   label,
-  type = "text",
   name,
+  type,
   value,
   onChange,
-  ...props
+  error = false,
+  helperText = "",
+  ...rest
 }) => {
   return (
     <TextField
+      fullWidth
+      margin="normal"
+      variant="outlined"
       label={label}
       name={name}
       type={type}
       value={value}
       onChange={onChange}
-      variant="outlined"
-      margin="normal"
-      fullWidth
-      {...props}
+      error={error}
+      helperText={helperText}
+      {...rest}
     />
   );
 };
