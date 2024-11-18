@@ -116,10 +116,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
           type="password"
           value={formData.confirmPassword}
           onChange={handleChange}
-          error={fieldErrors.confirmPassword}
-          helperText={
-            fieldErrors.confirmPassword ? "Passwords do not match" : ""
-          }
         />
       )}
       <SubmitButton

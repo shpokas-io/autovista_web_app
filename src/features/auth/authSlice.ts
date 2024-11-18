@@ -27,7 +27,7 @@ export const loginUser = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       if (error.response?.status === 401) {
-        return rejectWithValue("Incorrect username or password.");
+        return rejectWithValue("Invalid credentials. Please try again.");
       }
       return rejectWithValue("Something went wrong. Please try again later.");
     }
@@ -73,6 +73,10 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.loading = false;
         localStorage.setItem("token", action.payload.token);
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       })
       .addCase(registerUser.pending, (state) => {
         state.loading = true;

@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 interface SubmitButtonProps {
   label: string;
   onClick?: () => void;
-  disabled?: boolean; // Add the disabled prop
+  disabled?: boolean;
 }
 
 const SubmitButton: React.FC<SubmitButtonProps> = ({

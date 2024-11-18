@@ -23,7 +23,7 @@ function AuthPage() {
         <Typography variant="h5" gutterBottom>
           {isLogin ? "Login" : "Register"}
         </Typography>
-        {/* Removed onToggleLogin */}
+
         <AuthForm isLogin={isLogin} />
         <Box mt={2}>
           <Link href="#" onClick={toggleAuthMode}>
