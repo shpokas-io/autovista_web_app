@@ -9,15 +9,17 @@ import SubmitButton from "./SubmitButton";
 
 type AuthFormProps = {
   isLogin: boolean;
+  onSuccess: () => void;
 };
 
-const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
+const AuthForm: React.FC<AuthFormProps> = ({ isLogin, onSuccess }) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { loading, error, isAuthenticated } = useSelector(
     (state: RootState) => state.auth
   );
 
+  const [successMessage, setSuccessMessage] = useState("");
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -74,7 +76,15 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
           username: formData.username,
           password: formData.password,
         })
-      );
+      )
+        .unwrap()
+        .then(() => {
+          setSuccessMessage("Registration successful! Please login.");
+          onSuccess();
+        })
+        .catch(() => {
+          setSuccessMessage("");
+        });
     }
   };
 
@@ -86,6 +96,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
+      {successMessage && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {successMessage}
+        </Alert>
+      )}
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
@@ -116,6 +131,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ isLogin }) => {
           type="password"
           value={formData.confirmPassword}
           onChange={handleChange}
+          error={fieldErrors.confirmPassword}
+          helperText={
+            fieldErrors.confirmPassword ? "Passwords do not match" : ""
+          }
         />
       )}
       <SubmitButton

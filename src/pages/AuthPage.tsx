@@ -10,6 +10,10 @@ function AuthPage() {
     setIsLogin((prev) => !prev);
   };
 
+  const handleRegistrationSuccess = () => {
+    setIsLogin(true); // Switch back to login mode after successful registration
+  };
+
   return (
     <CenteredContainer>
       <Box
@@ -24,7 +28,7 @@ function AuthPage() {
           {isLogin ? "Login" : "Register"}
         </Typography>
 
-        <AuthForm isLogin={isLogin} />
+        <AuthForm isLogin={isLogin} onSuccess={handleRegistrationSuccess} />
         <Box mt={2}>
           <Link href="#" onClick={toggleAuthMode}>
             {isLogin
