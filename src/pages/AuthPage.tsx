@@ -11,7 +11,7 @@ function AuthPage() {
   };
 
   const handleRegistrationSuccess = () => {
-    setIsLogin(true); // Switch back to login mode after successful registration
+    setIsLogin(true);
   };
 
   return (

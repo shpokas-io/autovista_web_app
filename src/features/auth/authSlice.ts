@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
-
 interface AuthState {
   isAuthenticated: boolean;
   user: null | { username: string };
@@ -16,6 +15,22 @@ const initialState: AuthState = {
   error: null,
 };
 
+const loginApi = async (credentials: {
+  username: string;
+  password: string;
+}) => {
+  const response = await axios.post("/auth/login", credentials);
+  return response.data;
+};
+
+const registerApi = async (credentials: {
+  username: string;
+  password: string;
+}) => {
+  const response = await axios.post("/auth/register", credentials);
+  return response.data;
+};
+
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (
@@ -23,8 +38,7 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post("/auth/login", credentials);
-      return response.data;
+      return await loginApi(credentials);
     } catch (error: any) {
       if (error.response?.status === 401) {
         return rejectWithValue("Invalid credentials. Please try again.");
@@ -41,8 +55,7 @@ export const registerUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post("/auth/register", credentials);
-      return response.data;
+      return await registerApi(credentials);
     } catch (error: any) {
       if (error.response?.status === 500) {
         return rejectWithValue("Username already exists. Try a different one.");
@@ -64,6 +77,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -78,6 +92,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
