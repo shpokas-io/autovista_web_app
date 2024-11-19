@@ -8,11 +8,12 @@ const HeroSection: React.FC = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "60vh",
+        height: "100vh",
         bgcolor: "secondary.main",
         color: "white",
         textAlign: "center",
         px: 2,
+        mt: -8,
       }}
     >
       <Box>

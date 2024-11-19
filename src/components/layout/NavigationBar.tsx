@@ -44,10 +44,18 @@ const NavigationBar: React.FC = () => {
   );
 
   return (
-    <AppBar position="sticky" color="transparent" elevation={0}>
+    <AppBar
+      position="fixed"
+      color="transparent"
+      elevation={0}
+      sx={{
+        backdropFilter: "blur(10px)",
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+      }}
+    >
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Digital Car Garage
+          AutoVista
         </Typography>
         {isDesktop ? (
           <Box sx={{ display: "flex", justifyContent: "center", flexGrow: 1 }}>
