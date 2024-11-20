@@ -53,21 +53,50 @@ const NavigationBar: React.FC = () => {
         backgroundColor: "rgba(255, 255, 255, 0.1)",
       }}
     >
-      <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          AutoVista
-        </Typography>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {isDesktop ? (
-          <Box sx={{ display: "flex", justifyContent: "center", flexGrow: 1 }}>
-            <Button color="inherit" component={NavLink} to="/">
+          <>
+            <Button
+              color="inherit"
+              component={NavLink}
+              to="/"
+              sx={{ color: "white" }}
+            >
               Home
             </Button>
-            <Button color="inherit" component={NavLink} to="/cars">
+            <Typography
+              variant="h6"
+              sx={{
+                flexGrow: 1,
+                textAlign: "center",
+                fontWeight: "bold",
+                color: "white",
+              }}
+            >
+              AutoVista
+            </Typography>
+            <Button
+              color="inherit"
+              component={NavLink}
+              to="/cars"
+              sx={{ color: "white" }}
+            >
               Cars
             </Button>
-          </Box>
+          </>
         ) : (
           <>
+            <Box sx={{ flexGrow: 1 }}>
+              <Button color="inherit" component={NavLink} to="/">
+                Home
+              </Button>
+            </Box>
+            <Typography
+              variant="h6"
+              sx={{ flexGrow: 1, textAlign: "center", fontWeight: "bold" }}
+            >
+              AutoVista
+            </Typography>
             <IconButton color="inherit" edge="end" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>

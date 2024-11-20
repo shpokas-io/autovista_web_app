@@ -7,12 +7,12 @@ const FeaturesSection: React.FC = () => {
       title: "Explore Our Cars",
       description:
         "Browse through an extensive list of cars available in our garage.",
-      image: "https://via.placeholder.com/150", // Replace with actual image URL
+      image: "https://via.placeholder.com/150", // Replace LATER with actual image URL
     },
     {
       title: "3D Visualization",
       description: "Experience an immersive 3D rendering of your selected car.",
-      image: "https://via.placeholder.com/150", // Replace with actual image URL
+      image: "https://via.placeholder.com/150", // Replace LATER with actual image URL
     },
   ];
 
