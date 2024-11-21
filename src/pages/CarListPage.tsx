@@ -8,14 +8,14 @@ import autoVistaLogo from "../assets/images/logo/auto-vista-logo-nobc.png";
 const CarListPage: React.FC = () => {
   const cars = [
     {
-      image: "https://via.placeholder.com/150", // Replace with actual image URL
+      image: "https://via.placeholder.com/150",
       name: "Car Model 1",
       year: 2021,
       gear: "Automatic",
       power: "200 HP",
     },
     {
-      image: "https://via.placeholder.com/150", // Replace with actual image URL
+      image: "https://via.placeholder.com/150",
       name: "Car Model 2",
       year: 2020,
       gear: "Manual",
