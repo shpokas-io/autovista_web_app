@@ -25,7 +25,15 @@ const CarCard: React.FC<CarCardProps> = ({
   onSelect,
 }) => {
   return (
-    <Card sx={{ maxWidth: 345, m: 2 }}>
+    <Card
+      sx={{
+        maxWidth: 345,
+        m: 2,
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        borderRadius: 2,
+        color: "white",
+      }}
+    >
       <CardMedia component="img" height="140" image={image} alt={name} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
