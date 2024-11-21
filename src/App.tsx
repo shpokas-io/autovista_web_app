@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import CarListPage from "./pages/CarListPage";
 import CarDetailsPage from "./pages/CarDetailsPage";
 import LoginPage from "./pages/AuthPage";
+import "../style.css";
 
 function App() {
   const isAuthenticated = useSelector(
