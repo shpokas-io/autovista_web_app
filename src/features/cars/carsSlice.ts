@@ -35,12 +35,12 @@ const carsSlice = createSlice({
   name: "cars",
   initialState,
   reducers: {},
-  extraREducers: (builder) => {
+  extraReducers: (builder) => {
     builder
       .addCase(fetchCars.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchCars.fullfilled, (state, action) => {
+      .addCase(fetchCars.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.cars = action.payload;
       })

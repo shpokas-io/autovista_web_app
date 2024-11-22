@@ -1,27 +1,13 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import NavigationBar from "../components/layout/NavigationBar";
 import CarCard from "../components/CarLIstPage/CarCard";
 import SearchBar from "../components/CarLIstPage/SearchBar";
 import autoVistaLogo from "../assets/images/logo/auto-vista-logo-nobc.png";
+import { useFetchCars } from "../hooks/useFetchCars";
 
 const CarListPage: React.FC = () => {
-  const cars = [
-    {
-      image: "https://via.placeholder.com/150",
-      name: "Car Model 1",
-      year: 2021,
-      gear: "Automatic",
-      power: "200 HP",
-    },
-    {
-      image: "https://via.placeholder.com/150",
-      name: "Car Model 2",
-      year: 2020,
-      gear: "Manual",
-      power: "180 HP",
-    },
-  ];
+  const { cars, status, error } = useFetchCars();
 
   return (
     <>
@@ -61,17 +47,26 @@ const CarListPage: React.FC = () => {
             p: 2,
           }}
         >
-          {cars.map((car, index) => (
-            <CarCard
-              key={index}
-              image={car.image}
-              name={car.name}
-              year={car.year}
-              gear={car.gear}
-              power={car.power}
-              onSelect={() => console.log(`Selected ${car.name}`)}
-            />
-          ))}
+          {status === "loading" && <CircularProgress />}
+          {status === "failed" && (
+            <Typography variant="h6" color="error">
+              {error}
+            </Typography>
+          )}
+          {status === "succeeded" &&
+            cars.map((car, index) => (
+              <CarCard
+                key={index}
+                image={car.car_image}
+                name={`${car.make} ${car.model}`}
+                year={car.year}
+                gear={car.transmission}
+                power={`${car.power} HP`}
+                onSelect={() =>
+                  console.log(`Selected ${car.make} ${car.model}`)
+                }
+              />
+            ))}
         </Box>
       </Box>
     </>

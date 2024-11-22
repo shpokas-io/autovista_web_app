@@ -1,7 +1,12 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCars } from "../features/cars/carsSlice";
+import { RootState } from "../store";
+
 export const useFetchCars = () => {
   const dispatch = useDispatch();
   const cars = useSelector((state: RootState) => state.cars.cars);
-  const status = useSElector((state: RootState) => state.cars.status);
+  const status = useSelector((state: RootState) => state.cars.status);
   const error = useSelector((state: RootState) => state.cars.error);
 
   useEffect(() => {
