@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../utils/axios";
+import { AxiosError } from "axios";
+import customAxios from "../../utils/axios";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -22,10 +23,13 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post("/auth/login", credentials);
+      const response = await customAxios.post("/auth/login", credentials);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Login failed");
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        return rejectWithValue(error.response.data?.message || "Login failed");
+      }
+      return rejectWithValue("An unexpected error occurred.");
     }
   }
 );
@@ -37,12 +41,15 @@ export const registerUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post("/auth/register", credentials);
+      const response = await customAxios.post("/auth/register", credentials);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.message || "Registration failed"
-      );
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        return rejectWithValue(
+          error.response.data?.message || "Registration failed"
+        );
+      }
+      return rejectWithValue("An unexpected error occurred.");
     }
   }
 );
