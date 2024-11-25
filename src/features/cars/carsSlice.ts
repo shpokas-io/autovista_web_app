@@ -2,27 +2,26 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
 
 interface Car {
-  id: string;
+  transmission: string;
+  id: number;
   make: string;
   model: string;
   year: number;
-  color?: string;
   engine: string;
-  transmission: string;
-  drive: string;
-  power: number;
+  gear: string;
+  power: string;
   car_image: string;
 }
 
 interface CarsState {
   cars: Car[];
-  status: "idle" | "loading" | "succeeded" | "failed";
+  loading: boolean;
   error: string | null;
 }
 
 const initialState: CarsState = {
   cars: [],
-  status: "idle",
+  loading: false,
   error: null,
 };
 
@@ -35,18 +34,19 @@ const carsSlice = createSlice({
   name: "cars",
   initialState,
   reducers: {},
-  extraREducers: (builder) => {
+  extraReducers: (builder) => {
     builder
       .addCase(fetchCars.pending, (state) => {
-        state.status = "loading";
+        state.loading = true;
+        state.error = null;
       })
-      .addCase(fetchCars.fullfilled, (state, action) => {
-        state.status = "succeeded";
+      .addCase(fetchCars.fulfilled, (state, action) => {
+        state.loading = false;
         state.cars = action.payload;
       })
       .addCase(fetchCars.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message || null;
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch cars.";
       });
   },
 });
