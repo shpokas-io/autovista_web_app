@@ -1,14 +1,12 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../utils/axios";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface Car {
-  transmission: string;
   id: number;
   make: string;
   model: string;
   year: number;
   engine: string;
-  gear: string;
+  transmission: string;
   power: string;
   car_image: string;
 }
@@ -25,30 +23,21 @@ const initialState: CarsState = {
   error: null,
 };
 
-export const fetchCars = createAsyncThunk("cars/fetchCars", async () => {
-  const response = await axios.get("/cars");
-  return response.data;
-});
-
 const carsSlice = createSlice({
   name: "cars",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchCars.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchCars.fulfilled, (state, action) => {
-        state.loading = false;
-        state.cars = action.payload;
-      })
-      .addCase(fetchCars.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to fetch cars.";
-      });
+  reducers: {
+    setCars(state, action) {
+      state.cars = action.payload;
+    },
+    setLoading(state, action) {
+      state.loading = action.payload;
+    },
+    setError(state, action) {
+      state.error = action.payload;
+    },
   },
 });
 
+export const { setCars, setLoading, setError } = carsSlice.actions;
 export default carsSlice.reducer;

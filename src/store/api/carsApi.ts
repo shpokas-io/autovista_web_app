@@ -1,17 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import baseApi from "./baseApi";
 
-export const carsApi = createApi({
-  reducerPath: "carsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_BASE_URL,
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      if (token) headers.set("Authorization", `Bearer ${token}`);
-      return headers;
-    },
-  }),
+export const carsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getCars: builder.query({
+    getCars: builder.query<any, void>({
       query: () => "/cars",
     }),
   }),

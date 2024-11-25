@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
 import { useEffect, useState } from "react";
 import { Box, Alert } from "@mui/material";
-import { loginUser, registerUser } from "../../features/auth/authSlice";
+import { loginUser, registerUser } from "../../../src/store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import FormInput from "./FormInput";
 import SubmitButton from "./SubmitButton";

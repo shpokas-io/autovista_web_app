@@ -6,8 +6,18 @@ import SearchBar from "../components/CarListPage/SearchBar";
 import { useGetCarsQuery } from "../store/api/carsApi";
 import autoVistaLogo from "../assets/images/logo/auto-vista-logo-nobc.png";
 
+interface Car {
+  id: number;
+  make: string;
+  model: string;
+  year: number;
+  car_image: string;
+  transmission: string;
+  power: number;
+}
+
 const CarListPage: React.FC = () => {
-  const { data: cars, isLoading, isError } = useGetCarsQuery();
+  const { data: cars = [], isLoading, isError } = useGetCarsQuery();
 
   return (
     <>
@@ -54,7 +64,7 @@ const CarListPage: React.FC = () => {
             </Typography>
           )}
           {!isLoading &&
-            cars?.map((car) => (
+            cars.map((car: Car) => (
               <CarCard
                 key={car.id}
                 image={car.car_image}
