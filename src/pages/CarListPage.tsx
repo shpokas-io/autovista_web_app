@@ -1,13 +1,13 @@
 import React from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import NavigationBar from "../components/layout/NavigationBar";
-import CarCard from "../components/CarLIstPage/CarCard";
-import SearchBar from "../components/CarLIstPage/SearchBar";
-import { useCars } from "../hooks/useCars";
+import CarCard from "../components/CarListPage/CarCard";
+import SearchBar from "../components/CarListPage/SearchBar";
+import { useGetCarsQuery } from "../store/api/carsApi";
 import autoVistaLogo from "../assets/images/logo/auto-vista-logo-nobc.png";
 
 const CarListPage: React.FC = () => {
-  const { cars, loading, error } = useCars();
+  const { data: cars, isLoading, isError } = useGetCarsQuery();
 
   return (
     <>
@@ -47,20 +47,14 @@ const CarListPage: React.FC = () => {
             p: 2,
           }}
         >
-          {loading && <CircularProgress />}
-          {error && (
+          {isLoading && <CircularProgress />}
+          {isError && (
             <Typography color="error" variant="h6">
-              {error}
+              Failed to load cars. Please try again later.
             </Typography>
           )}
-          {!loading && !error && cars.length === 0 && (
-            <Typography color="white" variant="h6">
-              No cars found.
-            </Typography>
-          )}
-          {!loading &&
-            !error &&
-            cars.map((car) => (
+          {!isLoading &&
+            cars?.map((car) => (
               <CarCard
                 key={car.id}
                 image={car.car_image}

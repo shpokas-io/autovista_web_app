@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCars } from "../features/cars/carsSlice";
+import { fetchCars } from "../store/slices/carsSlice";
 import { RootState, AppDispatch } from "../store";
 
 export const useCars = () => {
